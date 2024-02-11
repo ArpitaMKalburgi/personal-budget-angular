@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personal Budget</title>
+
+    <!-- This is a Semantic HTML Change: Changed the link relationship to indicate it's a stylesheet -->
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./main.css">
+
+    <!-- This is an SEO Change -->
+    <meta name="description" content="Simplify budget management with our free app. Track expenses, stay on budget, and achieve financial success effortlessly.">
+    <!-- This is an SEO Change -->
+    <meta name="keywords" content="spending, financial strategy, financial control, personal finance, budget tracking, ">
+    <!-- This is an SEO Change -->
+    <meta name="author" content="Arpita M Kalburgi">
+    
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+
+</head>
+<body>
+
+    <!-- This is a Semantic HTML Change -->   
+    <nav class="menu" role="navigation">
+        <ul>
+            <!-- This is an A11y Change -->
+            <li><a href="/" aria-label="Go to Homepage">Homepage</a></li>
+            <!-- This is an A11y Change -->
+            <li><a href="./about.html" aria-label="Learn About Our App">About</a></li>
+            <!-- This is an A11y Change -->
+            <li><a href="./login.html" aria-label="Log into Your Account">Login</a></li>
+            <!-- This is an A11y Change -->
+            <li><a href="https://google.com" aria-label="Visit Google">Google</a></li>
+        </ul>
+    </nav>
+    
+
+    <!-- This is a Semantic HTML Change -->
+    <header class="hero">
+        <h1>Personal Budget</h1>
+        <h2>A personal-budget management app</h2>
+    </header>
+
+    <div class="container center">
+
+        <div class="page-area">
+
+            <div class="text-box">
+                <h1>Stay on track</h1>
+                <p>
+                    Do you know where you are spending your money? If you really stop to track it down,
+                    you would get surprised! Proper budget management depends on real data... and this
+                    app will help you with that!
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Alerts</h1>
+                <p>
+                    What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Results</h1>
+                <p>
+                    People who stick to a financial plan, budgeting every expense, get out of debt faster!
+                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    because they know it is all good and accounted for.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Free</h1>
+                <p>
+                    This app is free!!! And you are the only one holding your data!
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Stay on track</h1>
+                <p>
+                    Do you know where you are spending your money? If you really stop to track it down,
+                    you would get surprised! Proper budget management depends on real data... and this
+                    app will help you with that!
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Alerts</h1>
+                <p>
+                    What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Results</h1>
+                <p>
+                    People who stick to a financial plan, budgeting every expense, get out of debt faster!
+                    Also, they to live happier lives... since they expend without guilt or fear... 
+                    because they know it is all good and accounted for.
+                </p>
+            </div>
+    
+            <div class="text-box">
+                <h1>Chart.js Chart</h1>
+                <p>
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </p>
+            </div>
+            <div class="text-box">
+                <h1>D3.js Chart</h1>
+                <p>
+                    <svg id="d3Chart" width="400" height="400"></svg>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- This is a Semantic HTML Change -->
+    <footer class="bottom">
+        <p class="center">
+            All rights reserved &copy; Arpita M Kalburgi
+        </p>
+    </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var dataSource = {
+        datasets: [
+            {
+                data: [],
+                backgroundColor: [
+                '#ffcd56',
+                '#ff6384',
+                '#36a2eb',
+                '#fd6b19',
+                '#4bc0c0', 
+                '#9966ff', 
+                '#ff99cc',   
+                '#669966',   
+                '#ff6633'   
+
+                ],
+            }
+        ],
+        labels: []
+    
+    };
+
+    function createChart() {
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: dataSource
+        });
+    }
+     function getBudget(){
+        axios.get('/budget')
+        .then(function (res) {
+            console.log(res);
+            for ( var i = 0; i < res.data.length; i++ ) {
+                dataSource.datasets[0].data[i] = res.data[i].budget;
+                dataSource.labels[i] = res.data[i].title;
+            }
+            createChart();
+        });
+     }
+     getBudget();
+    
+</script>
+<script>
+    var dataSource = {
+        datasets: [
+            {
+                data: [],
+                backgroundColor: ['#ffcd56', '#ff6384', '#36a2eb', '#fd6b19', '#4bc0c0', '#9966ff', '#ff99cc', '#669966', '#ff6633'],
+            }
+        ],
+        labels: []
+    };
+
+    function createChart() {
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut', 
+        data: dataSource,
+        options: {
+            cutout: '50%' 
+        }
+    });
+}
+
+
+function createD3Chart(data) {
+    const svg = d3.select('#d3Chart'),
+        width = +svg.attr('width'),
+        height = +svg.attr('height'),
+        radius = Math.min(width, height) / 2,
+        g = svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`);
+
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    const pie = d3.pie().value(d => d.budget);
+
+
+    const path = d3.arc().outerRadius(radius ).innerRadius(radius - 200);
+
+    const label = d3.arc().outerRadius(radius - 40).innerRadius(radius - 40);
+
+    const arc = g.selectAll('.arc')
+        .data(pie(data))
+        .enter().append('g')
+        .attr('class', 'arc');
+
+    arc.append('path')
+        .attr('d', path)
+        .attr('fill', d => color(d.data.title));
+
+    arc.append('text')
+        .attr('transform', d => `translate(${label.centroid(d)})`)
+        .text(d => d.data.title)
+        .style('text-anchor', 'middle')
+        .style('font-size', '10px');
+}
+
+
+    function getBudget() {
+        axios.get('/budget')
+        .then(function (res) {
+            for (var i = 0; i < res.data.length; i++) {
+                dataSource.datasets[0].data[i] = res.data[i].budget;
+                dataSource.labels[i] = res.data[i].title;
+            }
+            createChart();
+            createD3Chart(res.data);
+        });
+    }
+    getBudget();
+</script>
+</body>
+</html>
