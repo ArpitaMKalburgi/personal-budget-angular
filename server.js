@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
-const port = 3002;
+const port = 3000;
 const fs = require('fs'); // Include the 'fs' module to read JSON file
-
+const cors =require('cors');
 app.use(express.static('public')); // Serve static files from the 'public' directory
-
+app.use(cors());
 
 // const budget = {
 //     Mybudget: [
@@ -33,14 +33,15 @@ app.get('/budget', (req, res) => {
             return;
         }
         try {
-            const Mybudget = JSON.parse(data);
-            res.json(Mybudget.budget);
+            const myBudget = JSON.parse(data);
+            res.json(myBudget); // Return the entire JSON data
         } catch (parseError) {
             console.error(parseError);
             res.status(500).json({ error: 'JSON Parsing Error' });
         }
     });
 });
+
 
 app.get('/hello', (req, res) => {
     res.send('Hello World!');
